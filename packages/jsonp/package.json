@@ -1,0 +1,26 @@
+{
+  "name": "jsonp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts",
+    "start": "npm run serve",
+    "serve": "node dist/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/koa": "^2.0.50",
+    "@types/koa-router": "^7.0.42",
+    "nodemon": "^1.19.2",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "koa": "^2.8.1",
+    "koa-router": "^7.4.0",
+    "uuid": "^3.3.3"
+  }
+}
