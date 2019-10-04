@@ -15,12 +15,14 @@
     "@types/koa": "^2.0.50",
     "@types/koa-router": "^7.0.42",
     "nodemon": "^1.19.2",
+    "parcel-bundler": "^1.12.3",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3"
   },
   "dependencies": {
     "koa": "^2.8.1",
     "koa-router": "^7.4.0",
+    "parcel-bundler": "^1.12.3",
     "uuid": "^3.3.3"
   }
 }

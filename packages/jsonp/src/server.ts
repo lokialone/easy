@@ -5,12 +5,17 @@ const app = new Koa(); // 新建一个koa应用
 const router = new Router(); // 新建一个路由
 
 router.get('/d', async (ctx) => { //定义路由以及对应处理
-    ctx.body = 'Hello dddd!';
+    let data = { 
+        name: 'lokia',
+        age: 12
+    }
+    ctx.body = JSON.stringify(data);
 });
 
 router.get('/jsonp', async (ctx) => { //定义路由以及对应处理
     let data = { 
-        name: 'lokia'
+        name: 'lokia',
+        age: 12
     }
     let callback = ctx.request.query.callback + '(' + JSON.stringify(data) + ')';
     ctx.body = callback;
