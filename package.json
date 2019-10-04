@@ -7,5 +7,10 @@
   "scripts": {
     "test": "lerna run test"
   },
-  "workspaces": ["packages/*"]
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "xlsx": "^0.15.1"
+  }
 }

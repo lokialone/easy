@@ -1,0 +1,18 @@
+{
+  "name": "excel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "excel",
+    "数据筛选及表格重新生成"
+  ],
+  "author": "lokialone",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "^0.15.1"
+  }
+}
