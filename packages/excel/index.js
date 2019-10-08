@@ -1,11 +1,7 @@
-// import XLSX from 'xlsx';
 const XLSX = require('xlsx');
 const workbook = XLSX.readFile('/Users/lokalone/Downloads/export.xls');
-// console.log(workbook);
 let sheetNames = workbook.SheetNames;
 let worksheet = workbook.Sheets[sheetNames[0]];
-console.log(worksheet['A1'])
-console.log(worksheet['A2'])
 const salerName = '业务员名称';
 const bussinessAddress = '办公地址';
 const billAddress = '开票地址';
@@ -102,7 +98,6 @@ Object.keys(worksheet).forEach(item => {
     let {
         w
     } = worksheet[item];
-    // console.log(worksheet[item]);
     if (currentRow !== row) {
         currentRow = row;
         let cannotUseFlag = rows.some((item, index) => {
