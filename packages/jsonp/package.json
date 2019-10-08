@@ -1,11 +1,13 @@
 {
-  "name": "jsonp",
+  "name": "lk-jsonp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/jsonp.js",
+  "files": ["dist/"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts",
+    "build": "rm -rf dist/ && tsc --build tsconfig.json",
     "start": "npm run serve",
     "serve": "node dist/server.js"
   },
