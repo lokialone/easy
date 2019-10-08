@@ -9,12 +9,23 @@ function insertScript(src) {
 
 }
 
+function seriesParamters(data: object) : string {
+  return Object.keys(data).reduce((acc, key) => {
+    acc += `${key}=${encodeURIComponent(data[key])}&`;
+    return acc;
+  }, '');
+}
+
 const JSONP = (config) => {
     let { data, url, callback } = config;
-    let functionName = `callback${count++}`;
-    let sUrl = `${url}?callback=${functionName}`;
+    let time = Date.now();
+    let functionName = `callback${count++}${time}`;
+    let seriesData = seriesParamters(data);
+    let sUrl = `${url}?${seriesData}callback=${functionName}`;
+    
     window[functionName] = function( data:any) {
       callback(data);
+      window[functionName] = undefined;
     }
     insertScript(sUrl);
 }
