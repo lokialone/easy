@@ -17,12 +17,15 @@ getData().then((data) => {
 ```
 
 ## event-emitter
-
 api
 - on
 - emit
 - off
 - once
+
+
+## 观察者模式
+
 
 ## 订阅发布模式
 
