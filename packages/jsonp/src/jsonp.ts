@@ -20,8 +20,14 @@ const JSONP = (config) => {
     let { data, url, callback } = config;
     let time = Date.now();
     let functionName = `callback${count++}${time}`;
-    let seriesData = seriesParamters(data);
-    let sUrl = `${url}?${seriesData}callback=${functionName}`;
+    let sUrl = '';
+    if (data) {
+      let seriesData = seriesParamters(data);
+      sUrl = `${url}?${seriesData}callback=${functionName}`;
+    } else {
+      sUrl = `${url}?callback=${functionName}`;
+    }
+    
     
     window[functionName] = function( data:any) {
       callback(data);
