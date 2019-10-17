@@ -2,7 +2,9 @@ interface funcContentInterface {
     func: Function, once: boolean
 }
 class EventEmitter {
-    private events: any;
+    private events: {
+        [k: string] : funcContentInterface[]
+    };
     constructor() {
         this.events = {};
     }
@@ -24,7 +26,7 @@ class EventEmitter {
     }
 
     emit(eventName: string) {
-        let funcs: funcContentInterface[] = this.events[eventName];
+        let funcs = this.events[eventName];
         funcs.forEach(funcContent => {
             funcContent.func();
         });
@@ -35,7 +37,7 @@ class EventEmitter {
 
     off(eventName: string, func?: Function) {
         if (func) {
-            let funcs: funcContentInterface[] = this.events[eventName];
+            let funcs = this.events[eventName];
             let remain = funcs.filter(funcContent => funcContent.func !== func);
             this.events[eventName] = remain;
         } else {

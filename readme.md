@@ -1,6 +1,7 @@
 write some simple tool
 
 ## jsonp实现
+
 ### usage
 ```javascript
 import JSONP from './jsonp';
@@ -23,10 +24,22 @@ api
 - off
 - once
 
+## easy promise
+通用Promise
+
+## flexiable webpack4 config
+## easy tapable
+## co实现
+
+## easy generate
+
+## easy rx.js
 
 ## 观察者模式
 
-
 ## 订阅发布模式
 
-## easy tapable
+## easy redux
+
+## easy react
+
