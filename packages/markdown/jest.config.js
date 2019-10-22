@@ -1,8 +1,4 @@
-{
-    "roots": [
-        "<rootDir>/tests"
-    ],
-    "transform": {
-        "^.+\\.tsx?$": "ts-jest"
-    }
-}
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+};
