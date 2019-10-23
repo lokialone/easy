@@ -5,24 +5,19 @@ export function splitParagraphs(input: string): string[] {
     return input.split('\n');
 }
 
-// type ItagName = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'a' | 'img';
 interface IResult {
-    tag: string,
-    content: string,
-    parent?: 'ul' | 'ol',
-    children?: []
+    tag?: string,
+    content?: string,
+    parent?: 'ul' | 'ol'
 }
 export function transformLine(input: string) {
     let cursor = 0;
-    // let res: IResult = {
-    //     tag: 'p',
-    //     content: ''
-    // };
-    let res: any[] = [];
+    let res: IResult [] = [];
     let content = '';
     while(cursor < input.length) {
         let char = input.charAt(cursor);
-        // 有关 #的处理
+        // isHorizontal
+        // header
         if (identify.isHashbang(char)) {
             let tmpContent = char;
             char = input.charAt(++cursor);
@@ -43,7 +38,7 @@ export function transformLine(input: string) {
             } 
             continue;
         }
-
+        // unordered list
         if (identify.isDash(char)) {
             char = input.charAt(++cursor);
             if (identify.isWhitespace(char)) {
@@ -56,6 +51,70 @@ export function transformLine(input: string) {
             } else {
                 content += char;
             }
+            continue;
+        }
+        // bold 
+        if (identify.isAsterisk(char)) {
+            if (content.length) {
+                res.push({content});
+                content = '';
+            }
+            let secondChar = input.charAt(++cursor);
+            if (identify.isAsterisk(secondChar)) {
+                let thirdChar = input.charAt(++cursor);
+                if (identify.isAsterisk(thirdChar)) {
+                    cursor++;
+                    res.push({tag: 'strong-em'});
+                } else {
+                    res.push({tag: 'strong'});
+                }
+            } else {
+                res.push({tag: 'em'});
+            }
+            continue;
+        }
+        // blockquote
+        if (identify.isGreater(char)) {
+            let secondChar = input.charAt(++cursor);
+            if(identify.isWhitespace(secondChar)) {
+                if (content.length) {
+                    res.push({content});
+                    content = '';
+                }
+                res.push({tag: 'blockquote'});
+                cursor++;
+            } else {
+                content += char;
+            } 
+            continue;
+        }
+        // orderlist
+        if (identify.isNumber(char)) {
+            let tmpContent = char;
+            char = input.charAt(++cursor);
+            while(identify.isNumber(char)) {
+                tmpContent += char;
+                char = input.charAt(++cursor);
+            }
+            // 根据空格判断## 为header是否成立
+            if (identify.isDot(char)) {
+                let nextChar = input.charAt(++cursor);
+                tmpContent += char;
+                if (identify.isWhitespace(nextChar)) {
+                    if (content.length) {
+                        res.push({content});
+                        content = '';
+                    }
+                    
+                    res.push({parent: "ol",tag: "li",content: tmpContent});
+                    cursor++;
+                } else {
+                    content += tmpContent;
+                }
+                
+            } else {
+                content += tmpContent;
+            } 
             continue;
         }
 

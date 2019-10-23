@@ -12,16 +12,17 @@ const isDash =  (character: string) : boolean => character === '-';
 const isOpeningParenthesis = (character: string) : boolean => character === '(';
 
 const isClosingParenthesis = (character: string) : boolean => character === ')';
-
+const isAsterisk =  (character: string) : boolean => character === '*';
 const isParenthesis = (character: string) : boolean =>
   isOpeningParenthesis(character) || isClosingParenthesis(character);
+const isGreater = (character:string): boolean => character === '>';
 // TODO
 // is code start ```
 //  is -
 const isHeader = (str:string): boolean => /^#+\s/.test(str);
 const isUlList =(str:string): boolean => str.startsWith('- ');
 const isOlList =(str:string): boolean => /^([0-9]+\.\s)/.test(str);
-const isBlockQuote =(str:string): boolean => str.startsWith('> ');
+
 export default {
     isHashbang,
     isSquareBrace,
@@ -36,6 +37,7 @@ export default {
     isHeader,
     isUlList,
     isOlList,
-    isBlockQuote,
-    isDash
+    isDash,
+    isAsterisk,
+    isGreater
 }
