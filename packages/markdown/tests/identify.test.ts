@@ -22,10 +22,4 @@ test('isOlList', () => {
     expect(identify.isOlList('x. hello')).toBe(false);
 });
 
-test('isBlockQuote', () => {
-    expect(identify.isBlockQuote('1. hello>')).toBe(false);
-    expect(identify.isBlockQuote('> hello')).toBe(true);
-    expect(identify.isBlockQuote('>hello')).toBe(false);
-    expect(identify.isBlockQuote('hello> hello')).toBe(false);
-});
 

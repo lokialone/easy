@@ -117,6 +117,24 @@ export function transformLine(input: string) {
             } 
             continue;
         }
+        // code
+        if (identify.isTick(char)) {
+            if (content.length) {
+                res.push({content});
+                content = '';
+            }
+            let tmpContent = char;
+            char = input.charAt(++cursor);
+            while(identify.isTick(char)) {
+                tmpContent += char;
+                char = input.charAt(++cursor);
+            }
+            res.push({tag: 'code', content: tmpContent});
+            continue;
+        }
+        // links
+
+        // images
 
         content += char;
         cursor++;

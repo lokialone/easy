@@ -16,6 +16,7 @@ const isAsterisk =  (character: string) : boolean => character === '*';
 const isParenthesis = (character: string) : boolean =>
   isOpeningParenthesis(character) || isClosingParenthesis(character);
 const isGreater = (character:string): boolean => character === '>';
+const isTick = (character:string): boolean => character === '`';
 // TODO
 // is code start ```
 //  is -
@@ -39,5 +40,6 @@ export default {
     isOlList,
     isDash,
     isAsterisk,
-    isGreater
+    isGreater,
+    isTick
 }
