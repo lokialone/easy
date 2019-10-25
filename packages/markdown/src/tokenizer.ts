@@ -84,9 +84,10 @@ class Tokenizer {
         while(this.getCursor() < input.length) {
             let char = input.charAt(this.getCursor());
             if (this.readHeader(char)) continue;
-            this.readHeader(char);
+            this.appendContent(char);
             this.increaseCursor();
         }
+        this.savePreviousContent();  
     }
 
     public readHeader(char: string) {
@@ -100,10 +101,10 @@ class Tokenizer {
             // 根据空格判断## 为header是否成立
             if (identify.isWhitespace(char)) {
                 this.savePreviousContent();
-                this.result.push({tag: 'h2'});
-                this.cursor++;
+                this.pushInfo({tag: `h${tmpContent.length}`});
+                this.increaseCursor();
             } else {
-                this.content += tmpContent;
+                this.appendContent(tmpContent);
             }
             return true;
         }
