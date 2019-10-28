@@ -24,7 +24,7 @@ const isExclamation = (character:string): boolean => character === '!';
 const isHeader = (str:string): boolean => /^#+\s/.test(str);
 const isUlList =(str:string): boolean => str.startsWith('- ');
 const isOlList =(str:string): boolean => /^([0-9]+\.\s)/.test(str);
-
+// const isLink = (str: string): boolean => /\[(.?)\]/.test(str);
 export default {
     isHashbang,
     isSquareBrace,

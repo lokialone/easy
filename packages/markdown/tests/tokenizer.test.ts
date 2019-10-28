@@ -45,13 +45,12 @@ test('transform link', () => {
     expect(tokenizer('[hello](https://xxxxx')).toEqual([{content: '[hello](https://xxxxx'}]);
     expect(tokenizer('[hello]https://xxxxx)')).toEqual([{content: '[hello]https://xxxxx)'}]);
     expect(tokenizer('nice[hello](https://xxxxx)')).toEqual([{content: 'nice'}, {tag: 'link', content: 'hello', url: 'https://xxxxx'}]);
+    expect(tokenizer('nice[hello(https://xxxxx)')).toEqual([{content: 'nice[hello(https://xxxxx)'}]);
 })
 
 
 test('transform image', () => {
-    expect(tokenizer('[hello](https://xxxxx)')).toEqual([{tag: 'link', content: 'hello', url: 'https://xxxxx'}]);
-    expect(tokenizer('[hello(https://xxxxx)')).toEqual([{content: '[hello(https://xxxxx)'}]);
-    expect(tokenizer('[hello](https://xxxxx')).toEqual([{content: '[hello](https://xxxxx'}]);
-    expect(tokenizer('[hello]https://xxxxx)')).toEqual([{content: '[hello]https://xxxxx)'}]);
-    expect(tokenizer('nice[hello](https://xxxxx)')).toEqual([{content: 'nice'}, {tag: 'link', content: 'hello', url: 'https://xxxxx'}]);
+    expect(tokenizer('![hello](https://xxxxx)')).toEqual([{tag: 'img', content: 'hello', url: 'https://xxxxx'}]);
+    expect(tokenizer('![hello(https://xxxxx)')).toEqual([{content: '![hello(https://xxxxx)'}]);
+    expect(tokenizer('![hello](https://xxxxx')).toEqual([{content: '![hello](https://xxxxx'}]);
 })

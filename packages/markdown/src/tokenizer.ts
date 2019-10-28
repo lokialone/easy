@@ -150,18 +150,25 @@ function tokenizer(input:string) {
             while(!identify.isClosingSquareBrace(char)) {
                 // 提前结束
                 if (isEmptyString(char)) {
-                    content = content + '[' + alt;
                     cursor++;
-                    return false;
+                    return {
+                        success: false,
+                        content: '[' + alt
+                    }
                 }
                 alt += char;
                 char = getNextChar();
             }
-            return alt;
+            return {
+                success: true,
+                content: alt
+            }
         } else {
-            return false;
+            return {
+                success: false,
+                content: ''
+            }
         }
-        
     }
     function readParenthesis() {
         let char = getNextChar();
@@ -193,23 +200,43 @@ function tokenizer(input:string) {
     }
     function readImage(char: string) {
         if (identify.isExclamation(char)) {
+            char = getNextChar();
+            let alt = readSquareBrace(char);
+            if (alt.success === false) {
+                if (alt.content) {
+                    content = content + '!' + alt.content;
+                    return true
+                }
+                return false;
+            };
+            let url = readParenthesis();
+            if( url.success === false) {
+                content = content + '![' + alt.content + ']' + url.content;
+                return true;
+            };
             savePreviousContent();
-
+            result.push({tag: 'img', content: alt.content, url: url.content});
             return true;
         }
         return false
     }
 
     function readLink(char: string) {
-        savePreviousContent();
         let alt = readSquareBrace(char);
-        if (alt === false) return true;
+        if (alt.success === false) {
+            if (alt.content) {
+                content += alt.content;
+                return true
+            }
+            return false;
+        };
         let url = readParenthesis();
         if( url.success === false) {
-            content = content + '[' + alt + ']' + url.content;
+            content = content + '[' + alt.content + ']' + url.content;
             return true;
         };
-        result.push({tag: 'link', content: alt, url: url.content});
+        savePreviousContent();
+        result.push({tag: 'link', content: alt.content, url: url.content});
         return true;
     }
 
@@ -221,6 +248,8 @@ function tokenizer(input:string) {
         if (readBold(char)) continue;
         if (readBlockQuote(char)) continue;
         if (readCode(char)) continue;
+        // readLink readImage 顺序不能替换
+        if (readImage(char)) continue;
         if (readLink(char)) continue;
         content += char;
         cursor++;
