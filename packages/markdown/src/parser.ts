@@ -31,7 +31,7 @@ export function transformLine(input: string) {
                     res.push({content});
                     content = '';
                 }
-                res.push({tag: 'h2'});
+                res.push({tag: `h${tmpContent.length}`});
                 cursor++;
             } else {
                 content += tmpContent;

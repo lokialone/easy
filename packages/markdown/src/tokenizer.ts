@@ -1,124 +1,76 @@
-//  以回车分割行
+//  normal tokenizer
 import identify from "./identify";
-
-export function splitParagraphs(input: string): string[] {
-    return input.split('\n');
-}
 
 interface IResult {
     tag?: string,
     content?: string,
     parent?: 'ul' | 'ol'
 }
-interface IContext {
-    input: string, 
-    content: string,
-    result: IResult[],
-    cursor: number
-}
 
-class Tokenizer {
-    private context:IContext = {
-        input: '',
-        content: '',
-        result: [],
-        cursor: 0
-    }
+function tokenizer(input:string) {
+    let content = '';
+    let result: IResult[]= [];
+    let cursor = 0;
+    let length = input.length;
 
-    public setInput(input:string) {
-        this.context.input = input;
-    }
-
-    public getInput() {
-        return this.context.input;
-    }
-
-    public getCursor() {
-        return this.context.cursor;
-    }
-
-    public increaseCursor() {
-        this.context.cursor++;
-    }
-
-    public getContent() {
-        return this.context.content;
-    }
-
-    public setContent(val: string) {
-        return this.context.content = val;
-    }
-
-    public appendContent(char: string) {
-        let content = this.getContent() + char;
-        this.setContent(content)
-    }
-
-    public pushInfo(res: IResult) {
-        this.context.result.push(res);
-    }
-
-    private savePreviousContent() {
-        let content = this.getContent();
+    function savePreviousContent() {
         if (content.length) {
-            this.pushInfo({content});
-            this.setContent('');
+            result.push({content});
+            content = '';
         }
     }
-
-    constructor(input: string) {
-        this.setInput(input);
-        this.innerLoop();
+    function getNextChar() {
+        cursor++;
+        return input.charAt(cursor);
     }
 
-    /**
-     * getNextChar
-     */
-    public getNextChar() {
-        this.increaseCursor();
-        return this.getInput().charAt(this.getCursor());
-    }
-
-    private innerLoop() {
-        let input = this.getInput();
-        while(this.getCursor() < input.length) {
-            let char = input.charAt(this.getCursor());
-            if (this.readHeader(char)) continue;
-            this.appendContent(char);
-            this.increaseCursor();
+    function readUlList(char: string) {
+        if (identify.isDash(char)) {
+            char =getNextChar();
+            if (identify.isWhitespace(char)) {
+                savePreviousContent();
+                result.push({tag: 'li', parent: 'ul'});
+                cursor++;
+            } else {
+                content += char;
+            }
+           return true;
         }
-        this.savePreviousContent();  
+        return false;
     }
 
-    public readHeader(char: string) {
+    function readHeader(char: string) {
         if (identify.isHashbang(char)) {
             let tmpContent = char;
-            char = this.getNextChar();
+            char = getNextChar();
             while(identify.isHashbang(char)) {
                 tmpContent += char;
-                char = this.getNextChar();
+                char = getNextChar();
             }
             // 根据空格判断## 为header是否成立
             if (identify.isWhitespace(char)) {
-                this.savePreviousContent();
-                this.pushInfo({tag: `h${tmpContent.length}`});
-                this.increaseCursor();
+                savePreviousContent();
+                result.push({tag: `h${tmpContent.length}`});
+                cursor++;
             } else {
-                this.appendContent(tmpContent);
+                content += tmpContent;
             }
             return true;
         }
         return false
     }
 
-    public addRules(char:string, callback: Function) {
-
+    while(cursor <length) {
+        let char = input.charAt(cursor);
+        if (readHeader(char)) continue;
+        if (readUlList(char)) continue;
+        content += char;
+        cursor++;
     }
+    savePreviousContent();
+    return result;
 
-    public getResult() {
-        return this.context.result;
-    }
 
 }
 
-export default Tokenizer;
+export default tokenizer;
