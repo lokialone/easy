@@ -54,3 +54,8 @@ test('transform image', () => {
     expect(tokenizer('![hello(https://xxxxx)')).toEqual([{content: '![hello(https://xxxxx)'}]);
     expect(tokenizer('![hello](https://xxxxx')).toEqual([{content: '![hello](https://xxxxx'}]);
 })
+
+
+test('transform multiple', () => {
+    expect(tokenizer('**![hello](https://xxxxx)**')).toEqual([{tag: "strong"},{tag: 'img', content: 'hello', url: 'https://xxxxx'}, {tag: "strong"}]);
+})
