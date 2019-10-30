@@ -1,7 +1,7 @@
 //  normal tokenizer
 import identify from "./identify";
 
-interface IResult {
+export interface IResult {
     tag?: string,
     content?: string,
     url?: string,
@@ -248,7 +248,7 @@ function tokenizer(input:string) {
         if (readBold(char)) continue;
         if (readBlockQuote(char)) continue;
         if (readCode(char)) continue;
-        // readLink readImage 顺序不能替换
+        // readImage readLink顺序不能替换
         if (readImage(char)) continue;
         if (readLink(char)) continue;
         content += char;

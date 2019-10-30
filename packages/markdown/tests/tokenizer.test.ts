@@ -5,6 +5,7 @@ test('transform headerline', () => {
     expect(tokenizer('# header')).toEqual([{tag: 'h1'}, {content: 'header'}]);
     expect(tokenizer(('## header'))).toEqual([{tag: 'h2'}, {content: 'header'}]);
     expect(tokenizer('## header ##')).toEqual([{tag: 'h2'}, {content: 'header ##'}]);
+    expect(tokenizer('## header ## header')).toEqual([{tag: 'h2'}, {content: 'header ##'}]);
     expect(tokenizer('##header')).toEqual([{content: '##header'}]);
 });
 

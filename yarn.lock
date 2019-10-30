@@ -7299,6 +7299,11 @@ posthtml@^0.11.2, posthtml@^0.11.4:
     posthtml-parser "^0.4.1"
     posthtml-render "^1.1.5"
 
+preact@^10.0.2:
+  version "10.0.2"
+  resolved "http://registry.npm.souche-inc.com/preact/download/preact-10.0.2.tgz#fd65b1cdd3c864ce482749466dfb97fb4f363bea"
+  integrity sha1-/WWxzdPIZM5IJ0lGbfuX+082O+o=
+
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "http://registry.npm.souche-inc.com/prelude-ls/download/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
