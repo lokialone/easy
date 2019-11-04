@@ -1,0 +1,5 @@
+const CicleLoading = (
+    <div>
+        
+    </div>
+);
