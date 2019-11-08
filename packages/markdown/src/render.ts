@@ -1,74 +1,59 @@
-interface Itag {
-    name: string,
-    attributes?: any,
-    content: any[]
-}
-function tag (name: string, content: any[], attributes?:any) {
-    return {
-        name,
-        attributes,
-        content
-    }
-}
 
-function link(target: string, text: string) {
-    return tag('a', [text], {href: target});
-}
+// function tag(name: string, content: any[], attributes?: any) {
+//     return {
+//         name,
+//         attributes,
+//         content
+//     }
+// }
 
-function htmlDoc(title: string, bodyContent: any) {
-    return tag('html', [tag('head', [tag('title', [title])]),
-    tag('body', [bodyContent])]);
-}
+// function link(target: string, text: string) {
+//     return tag('a', [text], {href: target});
+// }
 
-function img(src:string) {
-    return tag('img', [], {src});
-}
+// function htmlDoc(title: string, bodyContent: any) {
+//     return tag('html', [tag('head', [tag('title', [title])]),
+//     tag('body', bodyContent)]);
+// }
+// function img(src:string) {
+//     return tag('img', [], {src});
+// }
 
-type Ireplacement = [RegExp, string];
+// type Ireplacement = [RegExp, string];
 
-function escapeHTML(text: string) {
-    let replacements: Ireplacement[]= [[/&/g, "&amp;"], [/"/g, "&quot;"],
-    [/</g, "&lt;"], [/>/g, "&gt;"]];
+// function escapeHTML(text: string) {
+//     let replacements: Ireplacement[]= [[/&/g, "&amp;"], [/"/g, "&quot;"],
+//     [/</g, "&lt;"], [/>/g, "&gt;"]];
 
-    replacements.map((replace) => {
-        text = text.replace(replace[0], replace[1]);
-    });
-    return text;
-}
+//     replacements.map((replace) => {
+//         text = text.replace(replace[0], replace[1]);
+//     });
+//     return text;
+// }
 
-function renderHTML(element:Itag) {
-    let pieces: string[] = [];
-  
-    function renderAttributes(attributes:any) {
-      let result = [];
-      if (attributes) {
-        for (let name in attributes) 
-          result.push(" " + name + "=\"" +
-                      escapeHTML(attributes[name]) + "\"");
-      }
-      return result.join("");
-    }
-  
-    function render(element: Itag | string) {
-      // Text node
-      if (typeof element == "string") {
-        pieces.push(escapeHTML(element));
-      }
-      // only tag
-      else if (!element.content || element.content.length == 0) {
-        pieces.push("<" + element.name +
-                    renderAttributes(element.attributes) + "/>");
-      }
-      // Tag with content
-      else {
-        pieces.push("<" + element.name +
-                    renderAttributes(element.attributes) + ">");
+// function renderAttributes(attributes: any) {
+//     if (!attributes) return '';
+//     let result = '';
+//     for(let attr in attributes) {
+//         result += ` ${attr}="${escapeHTML(attributes[attr])}"`;
+//     }
+//     return result;
+// }
 
-        element.content.forEach(render);
-        pieces.push("</" + element.name + ">");
-      }
-    }
-  
-    render(element);
-    return pieces.join("");
-}
+// function renderHTML(element:any) {
+//     if (!element) return '';
+//     if (typeof element === 'string') return element;
+//     if (element.content.length === 0) {
+//         return `<${element.name}${renderAttributes(element.attributes)} />`
+//     } else {
+//         return `<${element.name}${renderAttributes(element.attributes)}>${element.content.map(renderHTML).join('')}</${element.name}>`
+//     }
+// }
+
+// let doc = tag('div', [tag('p', ['xxxx']), tag('div', [tag('span', [img("img/sheep.png")]), img("img/sheep.png"),tag("p", ["Here is a paragraph, and an image..."])])]);
+// var body = [tag("h1", ["The Test"]),
+//             tag("p", ["Here is a paragraph, and an image..."]),
+//             img("img/sheep.png")];
+// var doc = htmlDoc("The Test", body);
+// console.log(renderHTML(doc));
+// console.log(renderHTML(link("http://www.nedroid.com", "Drawings!")));
