@@ -1,5 +1,5 @@
 {
-  "name": "event-emitter",
+  "name": "easy-event-emitter",
   "version": "1.0.0",
   "description": "easy event-emitter",
   "main": "index.js",
