@@ -1,4 +1,4 @@
-import EventEmitter from './index';
+import EventEmitter from '../src/index';
 
 class A extends EventEmitter {
     data: {

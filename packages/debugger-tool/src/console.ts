@@ -23,5 +23,7 @@ let infosProxy = new Proxy(infos, {
         Reflect.set(target, key, value);
     }
 })
+
+// console.log()
 export default infos;
 

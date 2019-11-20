@@ -3,11 +3,11 @@
         "target": "es2015",
         "module": "commonjs",
         "noImplicitAny": true,
-        "outDir": "dist",
+        "outDir": "./dist/",
         "declaration": true,
-        "sourceMap": true
+        "sourceMap": true,
     },
     "include": [
-        "src/jsonp.ts"
+        "src/index.ts"
     ]
 }
