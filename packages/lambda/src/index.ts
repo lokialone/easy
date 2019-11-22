@@ -4,9 +4,16 @@ function partial<T>(func: Function, arg:T) {
     }
 }
 
+function compose(func1: Function, func2: Function) :Function {
+    return (...args: any[]) => {
+        return func1(func2.apply(null, args));
+    }
+}
+
 function sum (a: number, b: number):number {
     return a + b;
 }
 
 const a =  partial(sum, 2);
 console.log(a(7));
+
