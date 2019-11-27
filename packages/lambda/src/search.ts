@@ -84,7 +84,7 @@ type IRoute = {
     places: string[];
     length: number;
 }
-books solution
+// books solution
 function possibleRoutesFuncation(from: string, to: string) {
     function notVisited(route:IRoute, from: string) {
         return !route.places.includes(from);
