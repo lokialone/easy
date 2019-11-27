@@ -1,0 +1,12 @@
+{
+  "name": "mock-server",
+  "version": "1.0.0",
+  "description": "for normal test",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts",
+    "build": "rm -rf dist/ && tsc --build tsconfig.json"
+  },
+  "author": "lokialone",
+  "license": "ISC"
+}
