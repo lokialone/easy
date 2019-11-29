@@ -1,5 +1,6 @@
- 
- let INFOS: {
+import BinaryHeap from './binaryHeap';
+
+let INFOS: {
      [k: string]: number
  } = {};
 
@@ -12,7 +13,7 @@
  });
 
  function addHeightInfo(x: number, y:number, h: number) {
-    INFO_PROXY[`${x},${y}`] = h
+    INFO_PROXY[`${x}-${y}`] = h
  }
  addHeightInfo(0, 0, 18);
  addHeightInfo(11, 18, 8);
@@ -54,18 +55,72 @@ function weightDistance(pointA: Ipoint, pointB: Ipoint) {
 }
 
 function possibleDirections(point: Ipoint): Ipoint[] {
-    // mainly question is edge
-    let x = point.x;
-    let y = point.y;
     let directions: Ipoint[] = [
         Point(-1, -1), Point(0, -1), Point(1, -1),
         Point(-1, 0), Point(1, 0),
         Point(-1, 1), Point(0, 1), Point(1, 1),
     ];
     // 使用reduce,可以一次处理，觉得也无所谓就这样了
-    return directions.map((item) => addPoints(item, point)).filter((item) => {
-        return !(item.x < 0 || item.y < 0 || item.x > 20 || item.y > 20);
-    });
+    return directions
+        .map((item) => addPoints(item, point))
+        .filter((item) => {
+            return !(item.x < 0 || item.y < 0 || item.x > 20 || item.y > 20);
+        });
 }
 
+// not really understand why 
+function estimatedDistance(pointA: Ipoint, pointB:Ipoint) {
+    let dx = Math.abs(pointA.x - pointB.x);
+    let dy = Math.abs(pointA.y - pointB.y);
+    // assume diagonal distance between two squares as 141;
+    if (dx > dy) return (dx - dy) * 100 + dy * 141;
+
+    return (dy - dx) * 100 + dx * 141;
+}
+
+function pointID(point: Ipoint) {
+    return `${point.x}-${point.x}`;
+}
+
+function makeReachedList() {
+    return {}
+}
+
+function storeReached(list: {[key: string]: []}, point: Ipoint, route: []) {
+    list[pointID(point)] = route;
+}
+
+function findReached(list: {[key: string]:[]}, point: Ipoint) {
+    return list[pointID(point)];
+}
+
+function findeRoute(from: Ipoint, to: Ipoint) {
+    let openList = new BinaryHeap(routeScore);
+    let reachedList = makeReachedList();
+    function routeScore(route: any) {
+        if (route.score == undefined)
+          route.score = estimatedDistance(route.point, to) +
+                        route.length;
+        return route.score;
+    }
+    function addOpenRoute(route: any) {
+        openList.push(route);
+        storeReached(reachedList, route.point, route);
+    }
+    addOpenRoute({point: from, length: 0});
+    while(openList.size() > 0) {
+        let route = openList.pop();
+        if (isSamePoint(route.point, to)) return route; 
+        possibleDirections(route.ponit)
+            .forEach((direction) => {
+                let know = findReached(reachedList, direction);
+                let newLength = route.length + weightDistance(route.point,  direction);
+                if (!know || know.length > newLength) {
+                    if (know) openList.remove(know);
+                    addOpenRoute({point: direction, from: route, length: newLength});
+                }
+            })
+    }
+    return null;
+}
 console.log(possibleDirections(Point(0, 0)));
