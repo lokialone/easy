@@ -1,35 +1,11 @@
-const testDom = {
-    name: 'div',
-    props: {
-        onClick: {
-            value: {
-                type: 'var',
-                value: 'b'
-            }
-        },
-    },
-    children: [
-        "hello",
-        {
-            type: 'var',
-            value: 'world'
-        },
-        {
-            name: 'p',
-            children: [
-                'hi',
-                'ppp'
-            ]
-        }
-    ]
-}
+import { toVnode } from '../src/vnode2h';
+import tokenizer from '../src/tokenizer';
 
-function h() {
-    console.log('x');
-}
-let world = 'hi break world';
-let b = 'n b !';
-'h("div", {"onClick", b})'
-function parse() {
+test('toVnode div onClick', () => {
+    let data = `
+        <div onClick={()=>this.click}>{hello} world</div>
+    `;
+    console.log(toVnode(tokenizer(data)));
+})
 
-}
+

@@ -1,57 +1,77 @@
-const TOKENS = ['<', '>', '{', '}', '/', '='];
 const WHITESPACE = /\s+/;
-// const NUMBER = /^[0-9]+$/;
-// const STRING = /[0-9]
-function tokenizer(html: string) {
-    let length = html.length;
-    let cursor = 0;
-    let tokens = [];
-    let tmpContent = '';
-    while (cursor < length) {
-        let char = html.charAt(cursor);
-        if (TOKENS.includes(char)) {
-            if (tmpContent) {
-                tokens.push(tmpContent);
-                tmpContent = '';
-            }
-            cursor++;
-            tokens.push(char);
-            continue;
-        }
-       if (WHITESPACE.test(char)) {
-            if (tmpContent) {
-                tokens.push(tmpContent);
-                tmpContent = '';
-            }
-            cursor++;
-            continue;
-       }
-       tmpContent += char;
-       cursor++;
-    } 
-    return tokens;
+type IAttribute = {
+    type: 'var' | 'string' | 'null',
+    value: string | null
 }
-
-const testData = `
-    <div onClick={hanlderClick}>{xxxx}</div>
-    <p>hi</p>
-`;
-
+interface IAttributes {
+    [k: string]: IAttribute
+}
 interface IVnode {
     name: string;
-    attributes?: {
-        [k: string]: {
-            type: 'var' | 'string',
-            value: string
-        }
-    },
+    attributes?: IAttributes,
     children?: (string | IVnode)[]
 }
 
-function toVnode(tokens: string[], result: IVnode = {name: ''}) {
-    if (tokens[0] === '<' && tokens[1] !== '/') {
-        result.name = tokens[0];
+export function readAttributes(tokens:string[], cursor: number) {
+    let char = tokens[cursor];
+    let attrs: IAttributes= {};
+    let isValue = false; //更具等号前后来判断
+    let attr:IAttribute = {
+        type: 'null',
+        value: null
+    };
+    while(char !== '>' && cursor < tokens.length) {
+        if (WHITESPACE.test(char)) {
+            char = tokens[++cursor];
+            continue;
+        };
+
+        if (char === '=') {
+            isValue = true;
+            char = tokens[++cursor];
+            continue;
+        }
+
+        if (char === '{') {
+            attr.type = 'var';
+            char = tokens[++cursor];
+            continue;
+        }
+        if (char === '}') {
+            char = tokens[++cursor];
+            continue;
+        }
+        if(!isValue) {
+            attr = attrs[char] = {
+                type: 'null',
+                value: null, 
+            };
+        } else {
+            if (attr.type === 'null') attr.type = 'string';
+            attr.value = char;
+            isValue = false;
+        }
+        char = tokens[++cursor];
+    }
+    return  {
+        _cursor: cursor,
+        attrs
     }
 }
 
-console.log(tokenizer(testData));
+export function toVnode(tokens: string[], result: IVnode = {name: ''}) {
+    let cursor = 0;
+    if (tokens[cursor] === '<' && tokens[cursor + 1] !== '/') {
+        result.name = tokens[cursor + 1];
+        const { _cursor, attrs } = readAttributes(tokens, cursor + 2);
+        cursor = _cursor;
+        result.attributes = attrs;
+    }
+    console.log(result);
+}
+
+// export function parse(str: string) {
+//     return toVnode(tokenizer(str))
+// }
+
+// export default parse;
