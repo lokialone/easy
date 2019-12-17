@@ -24,16 +24,20 @@ function img(src:string) {
     return tag('img', [], {src});
 }
 
-type Ireplacement = [RegExp, string];
 
+type Ireplacement = {[k:string]:string};
 function escapeHTML(text: string) {
-    let replacements: Ireplacement[]= [[/&/g, "&amp;"], [/"/g, "&quot;"],
-    [/</g, "&lt;"], [/>/g, "&gt;"]];
+  // type Ireplacement = [RegExp, string];
+    // let replacements: Ireplacement[]= [[/&/g, "&amp;"], [/"/g, "&quot;"],
+    // [/</g, "&lt;"], [/>/g, "&gt;"]];
 
-    replacements.map((replace) => {
-        text = text.replace(replace[0], replace[1]);
+    // replacements.map((replace) => {
+    //     text = text.replace(replace[0], replace[1]);
+    // });
+    let replacements: Ireplacement = {"<": "&lt;", ">": "&gt;", "&": "&amp;", "\"": "&quot;"};
+    return text.replace(/[<>&"]/g, function(character:string) {
+      return replacements[character];
     });
-    return text;
 }
 
 function renderHTML(element:Itag) {
