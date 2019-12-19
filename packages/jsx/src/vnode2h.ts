@@ -15,11 +15,12 @@ interface IVnode {
 export function readAttributes(tokens:string[], cursor: number) {
     let char = tokens[cursor];
     let attrs: IAttributes= {};
-    let isValue = false; //更具等号前后来判断
+    let isValue = false; //根据等号前后来判断
     let attr:IAttribute = {
         type: 'null',
         value: null
     };
+    let selfEnd = false;
     while(char !== '>' && cursor < tokens.length) {
         if (WHITESPACE.test(char)) {
             char = tokens[++cursor];
@@ -41,6 +42,14 @@ export function readAttributes(tokens:string[], cursor: number) {
             char = tokens[++cursor];
             continue;
         }
+        if (char === '/' && tokens[++cursor] === '>') {
+            selfEnd = true;
+            break;
+           
+        } else {
+            cursor--;
+        }
+
         if(!isValue) {
             attr = attrs[char] = {
                 type: 'null',
@@ -55,19 +64,45 @@ export function readAttributes(tokens:string[], cursor: number) {
     }
     return  {
         _cursor: cursor,
-        attrs
+        attrs,
+        selfEnd
     }
 }
 
-export function toVnode(tokens: string[], result: IVnode = {name: ''}) {
+// const isTagStart = () =>
+
+function parseChildren(tokens: string[], cursor: number = 0) {
+    if (cursor > tokens.length) return;
+    // if (tokens[cursor] === '<' && tokens[cursor + 1] !== '/') {
+    //     result.name = tokens[cursor + 1];
+    //     const { _cursor, attrs, selfEnd } = readAttributes(tokens, cursor + 2);
+    //     cursor = _cursor;
+    //     result.attributes = attrs;
+    //     result.children = [];
+    //     if (!selfEnd) {
+    //         result.children = parseChildren(tokens, cursor);
+    //     }
+    // }
+}
+
+export function toVnode(tokens: string[], result: any) {
     let cursor = 0;
     if (tokens[cursor] === '<' && tokens[cursor + 1] !== '/') {
         result.name = tokens[cursor + 1];
-        const { _cursor, attrs } = readAttributes(tokens, cursor + 2);
+        const { _cursor, attrs, selfEnd } = readAttributes(tokens, cursor + 2);
         cursor = _cursor;
         result.attributes = attrs;
+        result.children = [];
+        if (!selfEnd) {
+            result.children = parseChildren(tokens, cursor);
+        }
+    } else {
+        console.error('请输入root标签');
     }
-    console.log(result);
+
+    
+    return result;
+    // console.log(result);
 }
 
 // export function parse(str: string) {

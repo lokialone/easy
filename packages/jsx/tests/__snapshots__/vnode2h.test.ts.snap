@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toVnode div onClick 1`] = `
+Object {
+  "attributes": Object {
+    "onClick": Object {
+      "type": "var",
+      "value": "()=>this.click",
+    },
+  },
+  "name": "div",
+}
+`;
+
+exports[`toVnode div onClick 2`] = `
+Object {
+  "attributes": Object {},
+  "name": "div",
+}
+`;

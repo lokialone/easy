@@ -5,7 +5,13 @@ test('toVnode div onClick', () => {
     let data = `
         <div onClick={()=>this.click}>{hello} world</div>
     `;
-    console.log(toVnode(tokenizer(data)));
-})
+    expect(toVnode(tokenizer(data))).toMatchSnapshot();
+});
 
+test('toVnode children', () => {
+    let data = `
+        <div><span>hello</span></div>
+    `;
+    expect(toVnode(tokenizer(data))).toMatchSnapshot();
+});
 
