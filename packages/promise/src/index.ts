@@ -1,133 +1,66 @@
-
-function getThen(value) {
-    var t = typeof value;
-    if (value && (t === 'object' || t === 'function')) {
-      var then = value.then;
-      if (typeof then === 'function') {
-        return then;
-      }
-    }
-    return null;
-}
-
-function doResolve(fn, onFulfilled, onRejected) {
-    var done = false;
-    try {
-      fn(function (value) {
-        if (done) return
-        done = true
-        onFulfilled(value)
-      }, function (reason) {
-        if (done) return
-        done = true
-        onRejected(reason)
-      })
-    } catch (ex) {
-      if (done) return
-      done = true
-      onRejected(ex)
-    }
-}
-
 class LKPromise {
-    // resolveValue: any;
-    // rejectValue: any;
     value: any;
     status: 'pending' | 'fulfilled' | 'reject';
-    callback: Function;
-    handlers: Function[]
-    constructor(func: Function) {
-        this.callback = func;
-        // this.resolveValue = null;
-        // this.rejectValue = null;
+    resolveValue: any;
+    rejectValue: any;
+    resolveCallback: Function;
+    rejectCallback: Function;
+    constructor(func) {
         this.status = 'pending';
-        doResolve(func, this.resolve, this.reject);
-        // this.callback((arg) => this.resolve(arg), (arg) => this.reject(arg));
+        try {
+            func((res) => this.resolve(res), this.reject);
+        } catch (error) {
+            
+        }
     }
-
-    fulfill(value) {
-        if (this.status === 'pending') {
-            this.value = value;
-            this.status = 'fulfilled';
-        } 
-    }
+   
 
     reject(value) {
         if (this.status === 'pending') {
-            this.value = value;
             this.status = 'reject';
+            this.value = value
+            this.rejectCallback(value);
         } 
     }
-    resolve(result) {
-        try {
-          var then = getThen(result);
-          if (then) {
-            doResolve(then.bind(result), this.resolve, this.reject)
-            return
-          }
-          this.fulfill(result);
-        } catch (e) {
-          this.reject(e);
+    resolve(value) {
+    console.log('resolve',this.status, this.status==='pending');
+      if (this.status === 'pending') {
+            this.value = value;
+            this.status = 'fulfilled';
+            console.log('resolve');
+            this.resolveCallback(value);
+      
+        } else if (this.status === 'fulfilled') {
+          
         }
+        
       }
-
-    catch(func: Function) {
-        this.callback(()=>{}, this.reject);
-    }
 
     then = function (onFulfilled: Function, onRejected?: Function) {
-
-        return new LKPromise((resolve, reject) => {
-          return this.done(function (result) {
-            if (typeof onFulfilled === 'function') {
-              try {
-                return this.resolve(onFulfilled(result));
-              } catch (ex) {
-                return this.reject(ex);
-              }
-            } else {
-              return resolve(result);
-            }
-          }, function (error) {
-            if (typeof onRejected === 'function') {
-              try {
-                return resolve(onRejected(error));
-              } catch (ex) {
-                return reject(ex);
-              }
-            } else {
-              return reject(error);
-            }
-          });
+        this.resolveCallback = onFulfilled;
+        this.rejectCallback = onRejected;
+        return new Promise((resolve, reject) => {
+            resolve(()=> {
+                console.log('thenable');
+            });
         });
-      }
+       
+    }
 }
 
 let a = new LKPromise((resolve, reject) => {
     console.log(1);
     setTimeout(() =>{
         console.log(2);
-        reject('d');
+        // reject('d');
         resolve(3);
-    }, 5000);
+    }, 1000);
 });
 
 a.then((res) => {
     console.log('then', res);
+    return 'tet';
 })
-
-// class Container {
-//     private __value: any;
-//     constructor(x) {
-//         this.__value = x;
-//     }
-//     static of(x) {
-//         return new Container(x);
-//     }
-//     map(func: Function) {
-//         return Container.of(func(this.__value));
-//     }
-// }
-
-// let c = Container.of(2).map((x) => x * 2).map((x) => x * 2);
-// console.log(c);
+.then((res) => {
+    console.log('then2', res);
+});
