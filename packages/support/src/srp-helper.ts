@@ -1,4 +1,4 @@
-import nextSvg  from './assets/next_page.svg';
+import nextSvg  from './assets/santa.svg';
 
 let container = document.createElement('div');
 
@@ -23,7 +23,7 @@ if (container) {
     container.style.position = 'fixed';
     container.style.width = '30px';
     container.style.userSelect= 'none';
-    container.innerHTML = `<div style="${styleStringfy(style)}"> <img draggable="false" width='10px;user-select: none;' src='${nextSvg}'/></div>`;
+    container.innerHTML = `<div style="${styleStringfy(style)}"> <img draggable="false" width='20px;user-select: none;' src='${nextSvg}'/></div>`;
 }
 
 let moveInfo = {

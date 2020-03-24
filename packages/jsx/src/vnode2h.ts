@@ -1,3 +1,5 @@
+import tokenizer from './tokenizer'
+
 const WHITESPACE = /\s+/;
 type IAttribute = {
     type: 'var' | 'string' | 'null',
@@ -7,7 +9,7 @@ interface IAttributes {
     [k: string]: IAttribute
 }
 interface IVnode {
-    name: string;
+    name?: string;
     attributes?: IAttributes,
     children?: (string | IVnode)[]
 }
@@ -63,7 +65,7 @@ export function readAttributes(tokens:string[], cursor: number) {
         char = tokens[++cursor];
     }
     return  {
-        _cursor: cursor,
+        _cursor: cursor + 1,
         attrs,
         selfEnd
     }
@@ -72,17 +74,35 @@ export function readAttributes(tokens:string[], cursor: number) {
 // const isTagStart = () =>
 
 function parseChildren(tokens: string[], cursor: number = 0) {
-    if (cursor > tokens.length) return;
-    // if (tokens[cursor] === '<' && tokens[cursor + 1] !== '/') {
-    //     result.name = tokens[cursor + 1];
-    //     const { _cursor, attrs, selfEnd } = readAttributes(tokens, cursor + 2);
-    //     cursor = _cursor;
-    //     result.attributes = attrs;
-    //     result.children = [];
-    //     if (!selfEnd) {
-    //         result.children = parseChildren(tokens, cursor);
-    //     }
-    // }
+    let result: (string| IVnode)[] = [];
+    console.log(cursor, tokens[cursor]);
+    while(cursor < tokens.length) {
+        if (tokens[cursor] === '<' && tokens[cursor + 1] !== '/') {
+            let children: IVnode= {};
+            children.name = tokens[cursor + 1];
+            const { _cursor, attrs, selfEnd } = readAttributes(tokens, cursor + 2);
+            cursor = _cursor;
+            children.attributes = attrs;
+            result.push(children);
+            if (!selfEnd) {
+                children.children = parseChildren(tokens, cursor);
+            }
+            return result;
+        }
+        if (tokens[cursor] === '<' && tokens[cursor + 1] === '/') {
+            cursor += 2;
+            while(tokens[cursor] !== '>' && cursor < tokens.length) {
+                cursor++;
+            }
+            cursor++;
+            continue;
+        }
+
+        result.push(tokens[cursor]);
+        cursor ++;
+
+    }
+    return result;
 }
 
 export function toVnode(tokens: string[], result: any) {
@@ -104,9 +124,13 @@ export function toVnode(tokens: string[], result: any) {
     return result;
     // console.log(result);
 }
-
+let data = `
+<div onClick={()=>this.click}>{hello} world</div>
+`;
+// console.log(tokenizer(data))
+console.log(toVnode(tokenizer(data),{}));
 // export function parse(str: string) {
-//     return toVnode(tokenizer(str))
+//     return 
 // }
 
 // export default parse;

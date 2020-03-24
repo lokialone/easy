@@ -1,48 +1,42 @@
 class LKPromise {
     value: any;
     status: 'pending' | 'fulfilled' | 'reject';
-    resolveValue: any;
-    rejectValue: any;
-    resolveCallback: Function;
-    rejectCallback: Function;
+    resolveCallbackFun: Function[];
+    rejectCallbackFun: Function[];
     constructor(func) {
         this.status = 'pending';
+        this.resolveCallbackFun = []
         try {
             func((res) => this.resolve(res), this.reject);
         } catch (error) {
             
         }
     }
-   
 
     reject(value) {
         if (this.status === 'pending') {
             this.status = 'reject';
-            this.value = value
-            this.rejectCallback(value);
+            this.value = value 
         } 
     }
     resolve(value) {
-    console.log('resolve',this.status, this.status==='pending');
-      if (this.status === 'pending') {
+        setTimeout(() => {
             this.value = value;
-            this.status = 'fulfilled';
-            console.log('resolve');
-            this.resolveCallback(value);
-      
-        } else if (this.status === 'fulfilled') {
-          
-        }
-        
+            this.resolveCallbackFun.forEach(func => func(value));
+        }, 0);
       }
 
     then = function (onFulfilled: Function, onRejected?: Function) {
-        this.resolveCallback = onFulfilled;
-        this.rejectCallback = onRejected;
         return new Promise((resolve, reject) => {
-            resolve(()=> {
-                console.log('thenable');
+            this.resolveCallbackFun.push(() => {
+                let result = onFulfilled(this.value);
+                if (result instanceof LKPromise) {
+                    result.then(resolve)
+                } else {
+                    resolve(result)
+                }
             });
+            
         });
        
     }
@@ -63,4 +57,14 @@ a.then((res) => {
 })
 .then((res) => {
     console.log('then2', res);
+   return new LKPromise((resolve) => {
+       setTimeout(() =>{
+        console.log(4);
+        // reject('d');
+        resolve(4);
+    }, 1000);
+   })
+}).then((res) => {
+    console.log('then3', res);
 });
+export default LKPromise;
