@@ -68,3 +68,7 @@ a.then((res) => {
     console.log('then3', res);
 });
 export default LKPromise;
+
+let c = [() => setTimeout(() => console.log(13), 10),() => setTimeout(() => console.log(14), 10)];
+const seriesPromises = (arr) => arr.reduce((acc, next) => acc.then(next), Promise.resolve());
+seriesPromises(c);
