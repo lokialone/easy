@@ -21,7 +21,11 @@ export class UpdateQueue {
         let currentUpdate = this.firstUpdate;
         while(currentUpdate) {
             let nextState =  typeof currentUpdate.payload === 'function' ? currentUpdate.payload(state) : currentUpdate.payload;
-            state = {...state, ...nextState};
+            if (typeof nextState === 'object' && nextState !== null) {
+                state = {...state, ...nextState};
+            } else {
+                state = nextState;
+            }
             currentUpdate = currentUpdate.nextUpdate;
         }
         this.firstUpdate = this.lastUpadte = null;

@@ -37,7 +37,7 @@ function reducer(state, action) {
 
 function FunctionCouter() {
   const [countState, dispatch] = React.useReducer(reducer, {count: 0});
-  const [number, setNumber] = React.useState({number: 10});
+  const [number, setNumber] = React.useState(10);
   return (
     <div>
       <div id="counter1">
@@ -45,8 +45,8 @@ function FunctionCouter() {
         <button onClick={() => dispatch({type: 'ADD'})}>加1</button>
       </div>
       <div id="counter2">
-        <span>{number.number}</span>
-        <button onClick={() => setNumber({number: number.number + 1})}>加1</button>
+        <span>{number}</span>
+        <button onClick={() => setNumber(number+ 1)}>加1</button>
       </div>
     </div> 
   )

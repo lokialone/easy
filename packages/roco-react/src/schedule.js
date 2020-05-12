@@ -317,7 +317,7 @@ export function useReducer(reducer, initialValue) {
             updateQueue: new UpdateQueue()
         }
     }
-   
+    
     const dispatch = action => {
         let payload = reducer? reducer(newHook.state, action): action;
         newHook.updateQueue.enqueueUpdate(
