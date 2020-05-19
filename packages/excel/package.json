@@ -14,5 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "xlsx": "^0.15.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2"
   }
 }

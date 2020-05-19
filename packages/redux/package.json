@@ -14,5 +14,8 @@
   "dependencies": {
     "jest": "^25.4.0",
     "ts-jest": "^25.4.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2"
   }
 }

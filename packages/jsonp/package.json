@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/jsonp.js",
-  "files": ["dist/"],
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts",
@@ -16,6 +18,7 @@
   "devDependencies": {
     "@types/koa": "^2.0.50",
     "@types/koa-router": "^7.0.42",
+    "cross-env": "^7.0.2",
     "nodemon": "^1.19.2",
     "parcel-bundler": "^1.12.3",
     "ts-node": "^8.4.1",

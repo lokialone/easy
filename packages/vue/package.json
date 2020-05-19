@@ -21,9 +21,22 @@
     "url": "git+https://github.com/lokialone/easy.git"
   },
   "scripts": {
+    "build:dev": "rollup -c",
+    "dev": "cross-env --ENV=development rollup -c -w",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/lokialone/easy/issues"
+  },
+  "dependencies": {
+    "rollup-plugin-livereload": "^1.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "cross-env": "^7.0.2",
+    "rollup": "^2.10.2",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-serve": "^1.0.1"
   }
 }

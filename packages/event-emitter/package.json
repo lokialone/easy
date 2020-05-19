@@ -11,5 +11,8 @@
     "event-emitter"
   ],
   "author": "lokialone",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.2"
+  }
 }
