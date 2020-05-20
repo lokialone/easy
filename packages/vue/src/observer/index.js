@@ -24,9 +24,6 @@ methods.forEach(method => {
     };
 });
 
-function effect() {
-    console.log('effect');
-}
 class Observer {
     constructor(data) {
         Object.defineProperty(data, '__ob__', {
@@ -60,7 +57,6 @@ function defineReactive(data, key, value) {
             return value;
         },
         set(newValue) {
-            effect();
             value = newValue;
             observe(newValue);
         },
