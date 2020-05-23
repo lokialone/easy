@@ -1,4 +1,5 @@
 import {isPlainObject} from '../shared/index';
+import Dep from './dep.js';
 const oldprotoMethods = Array.prototype;
 const proxyMethods = Object.create(oldprotoMethods);
 let methods = ['push', 'pop', 'shift', 'unshift', 'reverse', 'sort', 'splice'];
@@ -51,13 +52,18 @@ class Observer {
 }
 
 function defineReactive(data, key, value) {
+    const dep = new Dep();
     Object.defineProperty(data, key, {
         get() {
+            if (Dep.target) {
+                dep.depend();
+            }
             observe(value);
             return value;
         },
         set(newValue) {
             value = newValue;
+            dep.notify();
             observe(newValue);
         },
     });

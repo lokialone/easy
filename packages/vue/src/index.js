@@ -1,20 +1,26 @@
 import {initMixin} from './init';
+import {lifecycleMixin} from './lifecycle';
+import {renderMixin} from './render';
+import {initGlobalAPI} from './global-api/mixin';
 function Vue(options) {
     this._init(options);
 }
 
 initMixin(Vue);
-
+lifecycleMixin(Vue);
+renderMixin(Vue);
+initGlobalAPI(Vue);
 const vue = new Vue({
     el: '#app',
     data: {
         message: 'Hello Vue!',
-        test: [1, 2, 3],
+        test: 'xxx',
+    },
+    created() {
+        // console.log('created');
     },
 });
-console.log(vue, vue.message);
-vue.message = 4;
-vue.test.push(4);
-vue.test.push({test: '4'});
-console.log(vue);
+setTimeout(() => {
+    vue.message = 'update Vue';
+}, 1000);
 export default Vue;
