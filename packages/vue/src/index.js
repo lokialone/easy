@@ -14,13 +14,14 @@ const vue = new Vue({
     el: '#app',
     data: {
         message: 'Hello Vue!',
-        test: 'xxx',
+        test: [1, 2, 3, {a: 4}],
     },
     created() {
         // console.log('created');
     },
 });
+console.log(vue);
 setTimeout(() => {
-    vue.message = 'update Vue';
+    vue.test.push(4);
 }, 1000);
 export default Vue;

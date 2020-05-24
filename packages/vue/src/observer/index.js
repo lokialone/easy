@@ -1,4 +1,4 @@
-import {isPlainObject} from '../shared/index';
+import {isObject} from '../shared/index';
 import Dep from './dep.js';
 const oldprotoMethods = Array.prototype;
 const proxyMethods = Object.create(oldprotoMethods);
@@ -18,8 +18,12 @@ methods.forEach(method => {
             default:
                 break;
         }
+
         if (inserted) {
             ob.observeArray(inserted);
+        }
+        if (ob) {
+            ob.dep.notify();
         }
         return result;
     };
@@ -27,20 +31,26 @@ methods.forEach(method => {
 
 class Observer {
     constructor(data) {
-        Object.defineProperty(data, '__ob__', {
-            enumerable: false,
-            configurable: false,
-            value: this,
-        });
-        this.walk(data);
+        this.isObserver = true;
+        this.dep = new Dep();
+        if (!data.__ob__) {
+            Object.defineProperty(data, '__ob__', {
+                enumerable: false,
+                configurable: false,
+                value: this,
+            });
+        }
+        if (Array.isArray(data)) {
+            Object.setPrototypeOf(data, proxyMethods);
+            this.observeArray(data);
+        } else {
+            this.walk(data);
+        }
+        return this;
     }
     walk(data) {
         Object.keys(data).forEach(key => {
             let value = data[key];
-            if (Array.isArray(value)) {
-                Object.setPrototypeOf(data, proxyMethods);
-                this.observeArray(value);
-            }
             defineReactive(data, key, value);
         });
     }
@@ -53,12 +63,16 @@ class Observer {
 
 function defineReactive(data, key, value) {
     const dep = new Dep();
+    let childOb = observe(value);
     Object.defineProperty(data, key, {
         get() {
             if (Dep.target) {
                 dep.depend();
+                if (childOb) {
+                    childOb.dep.depend();
+                }
             }
-            observe(value);
+
             return value;
         },
         set(newValue) {
@@ -70,8 +84,8 @@ function defineReactive(data, key, value) {
 }
 
 export function observe(data) {
-    if (!isPlainObject(data)) {
-        return data;
+    if (!isObject(data)) {
+        return;
     }
     return new Observer(data);
 }

@@ -1,7 +1,7 @@
 let id = 0;
 export default class Dep {
     constructor() {
-        this.id++;
+        this.id = id++;
         this.subs = [];
     }
     // 在当前wather上加上 addSub
