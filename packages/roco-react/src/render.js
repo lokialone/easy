@@ -1,24 +1,4 @@
 // 该版本不是fiber版
-// export default function render(objects, dom) {
-//     function renderChildren(objects) {
-//         if (typeof objects === 'string') return document.createTextNode(objects);
-//         const element = document.createElement(objects.type);
-//         Object.keys(objects.props).forEach((key) => {
-//             if (key === 'children') {
-//                 objects.props.children.forEach((child) => {
-//                     element.appendChild(renderChildren(child));
-//                 });
-//             } else {
-//                 element[key] = objects.props[key];
-//             } 
-//         })
-//         return element;
-//     }
-
-//     const child = renderChildren(objects);
-//     dom.appendChild(child);
-// }
-
 // use fiber
 let nextUnitOfWork = null
 let wipRoot = null

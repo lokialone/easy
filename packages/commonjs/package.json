@@ -1,0 +1,32 @@
+{
+  "name": "commonjs",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "loki <648875862@qq.com>",
+  "homepage": "https://github.com/lokialone/easy#readme",
+  "license": "ISC",
+  "main": "lib/commonjs.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "http://r.cnpmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lokialone/easy.git"
+  },
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "bugs": {
+    "url": "https://github.com/lokialone/easy/issues"
+  },
+  "dependencies": {
+    "jest": "^26.0.1"
+  }
+}

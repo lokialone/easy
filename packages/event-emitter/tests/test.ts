@@ -1,10 +1,9 @@
-import EventEmitter from '../src/index';
+import EventEmitter from '../src/other';
 
 class A extends EventEmitter {
     data: {
         name: string
     }
-
     constructor(){
         super();
         this.data = {
@@ -14,7 +13,6 @@ class A extends EventEmitter {
             console.log('xxxx', this.data.name)
         });
     }
-
     start() {
         console.log('start');
         setTimeout(() => {
@@ -25,7 +23,7 @@ class A extends EventEmitter {
 
 
 let event = new EventEmitter();
-event.once('test', () => {
+event.on('test', () => {
     const a = new A();
     a.start();
 });
@@ -33,22 +31,22 @@ event.emit('test');
 event.emit('test');
 
 
-event.on('test2', function() {
-    const a = new A();
-    a.start();
-});
-event.on('test2', function() {
-    const a = new A();
-    a.start();
-});
-event.emit('test2');
-event.emit('test2');
+// event.on('test2', function() {
+//     const a = new A();
+//     a.start();
+// });
+// event.on('test2', function() {
+//     const a = new A();
+//     a.start();
+// });
+// event.emit('test2');
+// event.emit('test2');
 
-setTimeout(() => {
-    console.log('clear test2')
-    event.off('test2');
-    event.emit('test2');
-}, 2000);
+// setTimeout(() => {
+//     console.log('clear test2')
+//     event.off('test2');
+//     event.emit('test2');
+// }, 2000);
 
 
 

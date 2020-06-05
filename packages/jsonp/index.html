@@ -10,7 +10,20 @@
 
 <body>
 </body>
-<script src="./src/index.ts"></script>
+<!-- <script src="./src/index.ts"></script> -->
+<script>
+let xhr = new XMLHttpRequest();
+xhr.open("get","http://localhost:3000/d");
+xhr.onreadystatechange = function() {
+  if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        console.log(xhr.response);
+        console.log(xhr.getResponseHeader('name'));
+  }
+}
+xhr.setRequestHeader("name", "lokia");
+xhr.send();
+
+</script>
 </script>
 </script>
 <script>

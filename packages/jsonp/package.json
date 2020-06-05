@@ -9,6 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts",
+    "front": "http-server",
     "build": "rm -rf dist/ && tsc --build tsconfig.json",
     "start": "npm run serve",
     "serve": "node dist/server.js"
@@ -25,6 +26,7 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
+    "@koa/cors": "^3.1.0",
     "koa": "^2.8.1",
     "koa-router": "^7.4.0",
     "parcel-bundler": "^1.12.3",
