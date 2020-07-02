@@ -53,7 +53,7 @@ class Promise {
     }
 
     then(OnFulfilled, OnRejected) {
-        OnFulfilled = typeof OnFulfilled === 'function' ? OnFulfilled : v =>v;
+        OnFulfilled = typeof OnFulfilled === 'function' ? OnFulfilled : v => v;
         OnRejected = typeof OnRejected === 'function' ? OnRejected : err => { throw err };
         let promise2 = new Promise((resolve, reject) => {
             if (this.status === RESOLVED) {
@@ -107,13 +107,6 @@ class Promise {
     catch(onReject) {
         return this.then(null, onReject);
     }
-//     function (callback) {
-//     return this.then((value)=>{
-//         return Promise.resolve(callback()).then(()=>value)
-//     },(reason)=>{
-//         return Promise.resolve(callback()).then(()=>{throw reason})
-//     })  
-// }
     static resolve(value) {
         return new Promise((resolve, reject) => {
             resolve(value);
@@ -129,7 +122,7 @@ class Promise {
         return this.then((value)=> {
             return Promise.resolve(callback()).then(() => value);
         }, (err) => {
-            return Promise.resolve(callback()).then((err)=> {throw err})
+            return Promise.resolve(callback()).then(()=> {throw err})
         });
     }   
 }

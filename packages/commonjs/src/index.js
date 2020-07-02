@@ -96,7 +96,6 @@ Module._load = function(filepath) {
 
     // 获取路径后不要立即创建模块，先看一眼能否找到以前加载过的模块
     let cacheModule = Module.cache[filename];
-    console.log(cacheModule);
     if(cacheModule){
         return cacheModule.exports; // 直接返回上一次require的结果
     }
