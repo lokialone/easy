@@ -1,4 +1,3 @@
-// 该版本不是fiber版
 // use fiber
 let nextUnitOfWork = null
 let wipRoot = null
@@ -119,13 +118,6 @@ function reconcileChildren(wipFiber, elements) {
   let prevSibling = null   
   while (index < elements.length || oldFiber != null) {
     const element = elements[index]
-    //compare old Fiber
-    // const newFiber = {
-    //   type: element.type,
-    //   props: element.props,
-    //   parent: wipFiber,
-    //   dom: null,
-    // }
     let newFiber = null;
     const sameType =
       oldFiber &&
