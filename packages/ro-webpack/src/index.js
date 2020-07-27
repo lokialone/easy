@@ -1,1 +1,4 @@
-console.log('test');
+
+const a = ()=> {
+    console.log('test');
+};

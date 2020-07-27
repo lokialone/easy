@@ -1,3 +1,4 @@
+// 将资源使用jszip进行打包，最后生成zip文件
 const  { RawSource }= require('webpack-sources');
 const jsZip = require('jszip');
 class ZipPlugin {
@@ -9,7 +10,6 @@ class ZipPlugin {
         compiler.hooks.emit.tapAsync('ZipPlugin', (compilation, callback) => {
             let zip = new jsZip();
             for(let file in compilation.assets) {
-                 console.log(file);
                  zip.file(file, compilation.assets[file].source());
             }
             const {filename} = this.options;
