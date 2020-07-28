@@ -13,7 +13,25 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: ['babel-loader']
-            }
+            },
+            {
+                test: /\jpe?g|png$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        name:'[contenthash].[ext]',
+                        limit: 20 * 1024
+                    }
+                }]
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    'style-loader', //css变为style标签插入到页面
+                    // 'css-loader', //出路css中的@import url('xxx.png')
+                    'less-loader'
+                ]
+            },
         ]
     },
     plugins: [
