@@ -13,7 +13,7 @@
   "author": "lokialone",
   "license": "ISC",
   "dependencies": {
-    "xlsx": "^0.15.1"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.2"
